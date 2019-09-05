@@ -1,0 +1,182 @@
+﻿@{
+    Course course = new Course();
+    var class_cource = ViewBag.course as List<Course>;
+}
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    function deleteclass(id) {
+        $.ajax(
+            {
+                url: '/Data/DeleteClass',
+                type: "POST",
+                data: { "id": id },
+                success: function () {
+                    document.getElementById(id).remove();
+                },
+                Error: function () {
+                    alert("222");
+                }
+
+            }
+        );
+    };
+
+    function getinfo() {
+        $.ajax({
+            url:'/Data/editclass',
+            data: $('#classsett').serialize(),
+            success: function () {
+                console.log("ok!");
+            }
+            
+        })
+    }
+
+    function setinfo(id) {
+        $.ajax({
+            url: '/Data/Getclass',
+            data: { 'id': id, },
+            success: function (a) {
+                console.log(a.class_name);
+                //   $("#classname").val(a.class_name);
+                document.getElementById("classname").textContent = a.class_name;
+                $("#xueyuanname").val(a.class_academic);
+                $("#zhuanyename").val(a.class_major);
+                $("#teacher").val(a.class_Teacher);
+                $("#Adec").val(a.class_dec);
+            }
+        })
+    }
+</script>
+<div class="main-content-container container-fluid px-4">
+    <!-- Page Header -->
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+            @*<span class="text-uppercase page-subtitle">Overview</span>*@
+            <h3 class="page-title" style="margin-left:10px"><font face="楷体">课程管理</font></h3>
+        </div>
+    </div>
+    <!-- End Page Header -->
+    <!-- Default Light Table -->
+    <div class="row">
+        <div class="form-group">
+            <input type="text" style="margin-left:25px;" class="input">
+            <input type="button" class="btn btn-info" value="+新增" data-toggle="modal" data-target="#myModal" />
+
+
+
+            @*模态框*@
+            <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:1000px;height:1111px">
+                    <div class="modal-content" style="width:700px">
+                        <div class="modal-header">
+                            @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                            <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+                        </div>
+                        <form asp-controller="Teacher" asp-action="ClassSetting">
+                            <div class="modal-body">
+                                <div class="row" style="margin-top:15px">
+                                    <font>课程名称:</font><input type="text" asp-for="@course.Class_name" style="margin-left:10px" class="input" />
+                                    <a style="margin-left:30px">学院名称：</a><input type="text" asp-for="@course.Class_academic" class="input" />
+                                </div>
+                                <div class="row" style="margin-top:15px">
+                                    &nbsp;&nbsp; &nbsp;专业：&nbsp;&nbsp;&nbsp;<input type="text" asp-for="@course.Class_major" class="input" />
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;教师：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" asp-for="@course.Class_Teacher" class="input" />
+                                </div>
+                                <div class="row" style="margin-top:15px">
+                                    课程描述：
+                                    <textarea class="form-control" asp-for="@course.Class_dec" style="margin-top:5px"></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer" style="margin-top:15px">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="submit" class="btn btn-primary">提交更改</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                    <h6 class="m-0">班级信息</h6>
+                </div>
+                <div class="card-body p-0 pb-3 text-center">
+                    <table class="table mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" class="border-0">ID</th>
+                                <th scope="col" class="border-0">课程名</th>
+                                <th scope="col" class="border-0">所属学院</th>
+                                <th scope="col" class="border-0">所属专业</th>
+                                <th scope="col" class="border-0">课程操作</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (class_cource != null)
+                            {
+                                @foreach (var cour in class_cource)
+                                {
+                                    <tr id="@cour.Class_ID">
+                                        <td>@cour.Class_ID</td>
+                                        <td>@cour.Class_name</td>
+                                        <td>@cour.Class_academic</td>
+                                        <td>@cour.Class_major</td>
+                                        <td>
+                                            <input type="button" class="btn btn-info" value="编辑" data-toggle="modal" data-target="#myModal" onclick="setinfo(@cour.Class_ID)" />
+                                            <input type="button" class="btn btn-info" value="删除" onclick="deleteclass(@cour.Class_ID)" />
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- End Default Light Table -->
+    <!-- Default Dark Table -->
+    <!-- End Default Dark Table -->
+</div>
+
+<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1000px;height:1111px">
+        <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+            </div>
+            <form asp-controller="Teacher" asp-action="ClassSetting" id="classsett">
+                <div class="modal-body">
+                    <div class="row" style="margin-top:15px">
+                        <font>课程名称:</font><input type="text" style="margin-left:10px" class="input" id="classname" />
+                        <a style="margin-left:30px">学院名称：</a><input type="text" class="input" id="xueyuanname"/>
+                    </div>
+                    <div class="row" style="margin-top:15px">
+                        &nbsp;&nbsp; &nbsp;专业：&nbsp;&nbsp;&nbsp;<input type="text"  class="input" id="zhuanyename"/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;教师：&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="input" id="teacher"/>
+                    </div>
+                    <div class="row" style="margin-top:15px">
+                        课程描述：
+                        <textarea class="form-control"  style="margin-top:5px" id="Adec"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer" style="margin-top:15px">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">提交更改</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

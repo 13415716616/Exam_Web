@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewData["Title"] = "StartTest";
+    Layout = "~/Views/Shared/Student_Layout.cshtml";
+    var test = ViewBag.test as Test;
+    var Qselect = ViewBag.select as List<SelectQuestions>;
+    int i = 1;
+    var answer = ViewBag.answer as List<AnswerQuestion>;
+}
+
+<script>
+    @*var a = [];
+    a = new Array("@test.Test_Select")[0].split(',');
+    function gettest(id) {
+        $.ajax({
+            url: "/Data/GetSelect",
+            type: "post",
+            dataType: "json",
+            data: { "id":id },
+            success: function (select) {
+                console.log(select);
+            }
+        })
+    }*@
+</script>
+<div class="row" style="margin-top:15px" >
+    <div class="col" onload="aaa()">    
+        <div class="col-lg-12 mb-4">
+            <!-- Sliders & Progress Bars -->
+            <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                    <h6 class="m-0">@test.Test_name</h6>
+                </div>
+                <form asp-controller="Student" asp-action="Starttest">
+                    <input type="text"  value="@test.Test_ID" name="T_id" style="display:none"/>
+                    <ul class="list-group list-group-flush">
+
+                        @foreach (var q in Qselect)
+                        {
+                            @if (q != null)
+                            {
+                                <li class="list-group-item px-3">
+                                    <!-- Progress Bars -->
+                                    <div class="mb-2">
+                                        <table style="margin-left:5%;background-color:white;width:60%">
+                                            <tr><td>@i.@q.Que_name</td></tr>
+                                            <tr><td>&nbsp;&nbsp;&nbsp;<input type="radio" name="@q.Que_ID" value="A" />A.@q.First_select.</td></tr>
+                                            <tr><td>&nbsp;&nbsp;&nbsp;<input type="radio" name="@q.Que_ID" value="B" />B.@q.Second_select </td></tr>
+                                            <tr><td>&nbsp;&nbsp;&nbsp;<input type="radio" name="@q.Que_ID" value="C" />C.@q.Third_select.</td></tr>
+                                            <tr><td>&nbsp;&nbsp;&nbsp;<input type="radio" name="@q.Que_ID" value="D" />D.@q.Fourth_select.</td></tr>
+                                        </table>
+                                    </div>@{ i++;}
+                                    <!-- / Progress Bars -->
+                                </li>
+                            }}
+                        @foreach (var a in answer)
+                        {
+                            <li class="list-group-item px-3">
+                                <!-- Progress Bars -->
+                                <div class="mb-2">
+                                    <div class="row" style="margin-top:8px;margin-left:5%">
+                                        @i.@a.AQ_Name;
+                                    </div>
+                                    <div class="row" style="margin-top:8px;margin-left:5%">
+                                        <textarea class="input" style="width:80%;height:80px" name="@a.AQ_ID"></textarea>
+                                    </div>
+                                </div>
+</li>
+                                    }
+                        </ul>
+                    <input type="submit" class="btn btn-info" style="margin-left:45%;height:38px;width:80px;margin-top:10px;margin-bottom:10px" />
+</form>
+</div>
+           
+        </div>
+    </div>
+    </div>

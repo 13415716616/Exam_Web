@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "Grade";
+    Layout = "~/Views/Shared/mian_layout.cshtml";
+    var username = ViewBag.username as List<string>;
+    var testname = ViewBag.Testname as List<string>;
+    var grade = ViewBag.grade as List<Grade>;
+    var i = 0;
+}
+
+<script>
+    var id;
+    function editgrade() {
+        $.ajax({
+            url: "/Data/EditGrade",
+            type: "post",
+            data: {
+                "S_mark": $("#Sel_A").val(),
+                "A_mark": $("#Sel_B").val(),
+                "G_mark": $("#Sel_C").val(),
+                "id": id,
+            },
+            success: function () {
+                console.log("ok!");
+            }
+        })
+    }
+
+    function getgrade(_id) {
+        id = _id;
+        $.ajax({
+            url: "/Data/GetGrade",
+            type:"post",
+            data: {
+                "id":id,
+            },
+            dataType: "json",
+            success: function (a) {
+                console.log(a);
+                $("#Sel_A").val(a.s_mark);
+                $("#Sel_B").val(a.a_mark);
+                $("#Sel_C").val(a.mark);
+            }
+        })
+    }
+</script>
+
+<div class="row">
+    <div class="col">
+        <div class="card card-small mb-4">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">成绩查询</h6>
+            </div>
+            <div class="card-body p-0 pb-3 text-center">
+                <table class="table mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th scope="col" class="border-0">学生</th>
+                            <th scope="col" class="border-0">试卷名</th>
+                            <th scope="col" class="border-0">班级</th>
+                            <th scope="col" class="border-0">选择题</th>
+                            <th scope="col" class="border-0">问答题</th>
+                            <th scope="col" class="border-0">总分</th>
+                            <th scope="col" class="border-0">试卷操作</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in grade)
+                        {
+                            <tr>
+                                <td>@username[i]</td>
+                                <td>@testname[i]</td>
+                                <td></td>
+                                <td id="@a.Gra_id+S">@a.S_mark</td>
+                                <td id="@a.Gra_id+A">@a.A_mark</td>
+                                <td id="@a.Gra_id+G">@a.mark</td>
+                                <td>
+                                    <input type="button" class="btn btn-info" value="编辑"  data-toggle="modal" data-target="#myModal"  onclick="getgrade(@a.Gra_id)" />
+                                </td>
+                            </tr>i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onload="">
+    <div class="modal-dialog" style="width:1000px;height:1111px">
+        <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                <h4 class="modal-title" id="myModalLabel">修改信息</h4>
+            </div>
+                <div class="modal-body">
+                    <div class="row" style="margin-top:8px">选择题分数：<input type="text" class="input" id="Sel_A" /></div>
+                    <div class="row" style="margin-top:8px">问答题分数：<input type="text" class="input" id="Sel_B" /></div>
+                    <div class="row" style="margin-top:8px">总分：<input type="text"  class="input" id="Sel_C" /></div>                  
+                    <div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="submit" class="btn btn-primary" onclick="editgrade()" data-dismiss="modal">提交更改</button>
+                        </div>
+                    </div>
+    </div>
+</div>

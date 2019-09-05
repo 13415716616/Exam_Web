@@ -1,0 +1,84 @@
+﻿
+@{
+    ViewData["Title"] = "CreateTest";
+    Layout = "~/Views/Shared/mian_layout.cshtml";
+    Test test = new Test();
+    var All_test = ViewBag.All_test as List<Test>;
+}
+
+<script>
+
+    function deledt(id) {
+        $.ajax({
+            url: "/Data/deleteTest",
+            data: { "id": id },
+            success: function () {
+                document.getElementById(id).remove();
+            }
+        })
+    }
+</script>
+
+<div class="main-content-container container-fluid px-4">
+    <!-- Page Header -->
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+            @*<span class="text-uppercase page-subtitle">Overview</span>*@
+            <h3 class="page-title">试卷管理</h3>
+        </div>
+    </div>
+    <!-- End Page Header -->
+    <!-- Default Light Table -->
+    <div class="row">
+        <div class="form-group">        
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                    <h6 class="m-0">试卷名</h6>
+                </div>
+                <div class="card-body p-0 pb-3 text-center">
+                    <table class="table mb-0">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" class="border-0">ID</th>
+                                <th scope="col" class="border-0">试卷名称</th>
+                          
+                                <th scope="col" class="border-0">分值</th>
+                                <th scope="col" class="border-0">试卷操作</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if(All_test!=null)
+                            {
+                            @foreach (var t in All_test)
+                            {
+                                <tr id="@t.Test_ID">
+                                    <td>@t.Test_ID</td>
+                                    <td>@t.Test_name.</td>
+                                  
+                                    <td>@t.Mark</td>
+                                    <td>                                      
+                                        <a> <input type="button" class="btn btn-info" value="删除" onclick="deledt(@t.Test_ID)"/></a>
+                                    </td>
+                                </tr>
+                            } }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- End Default Light Table -->
+    <!-- Default Dark Table -->
+    <!-- End Default Dark Table -->
+</div>
+
+

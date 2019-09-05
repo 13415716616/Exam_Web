@@ -1,0 +1,88 @@
+﻿
+@{
+    ViewData["Title"] = "Setting";
+    Layout = "~/Views/Shared/mian_layout.cshtml";
+    Teachers teachers = ViewBag.Teacher as Teachers;
+}
+<form asp-controller="Teacher" asp-action="Setting" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-lg-6" style="margin-top:35px">
+            <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                    <h6 class="m-0">账号信息设置</h6>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-3">
+                        <div class="row">
+                            <div class="col">
+
+                                <input type="text" asp-for="@teachers.Teacher_id" style="display:none" />
+                                <div class="form-row">
+                                    <div class="form-group col-8">
+                                        <label for="feLastName">昵称：</label>
+                                        <input type="text" class="form-control" asp-for="@teachers.Teacher_name" id="feLastName">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <label for="feEmailAddress">电子邮箱：</label>
+                                        <input type="email" class="form-control" id="feEmailAddress" asp-for="@teachers.Teacher_email" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <label for="feInputAddress">班级：</label>
+                                        <input type="text" class="form-control" id="feInputAddress" asp-for="@teachers.Teacher_class" placeholder="请输入班级">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-8 ">
+                                        <label for="feInputAddress">性别：</label><br />
+                                        <input type="radio" name="sex" class="radio" value="男" asp-for="@teachers.Teacher_sex" />男
+                                        <input type="radio" name="sex" class="radio-inline" value="女" asp-for="@teachers.Teacher_sex" />女
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label for="feDescription">个人描述</label>
+                                        <textarea class="form-control" name="Dec" asp-for="@teachers.Teacher_dec" rows="5"></textarea>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-accent">保存更改</button>
+
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-lg-4" style="margin-top:105px;margin-left:30px">
+            <div class="card card-small mb-4 pt-3">
+                <div class="card-header border-bottom text-center">
+                    <div class="mb-3 mx-auto">
+                        <img class="rounded-circle" src="@ViewBag.img" alt="User Avatar" style="height:150px;width:150px">
+                    </div>
+                    <h4 class="mb-0">@teachers.Teacher_name</h4>
+                    <br />
+                   <input type="file" asp-for="@teachers.imgfile" multiple style="margin-left:20%">
+                    <ul class="list-group list-group-flush">
+                        @*<li class="list-group-item px-4">
+                <div class="progress-wrapper">
+                    <strong class="text-muted d-block mb-2">Workload</strong>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-primary" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" style="width: 74%;">
+                            <span class="progress-value">74%</span>
+                        </div>
+                    </div>
+                </div>
+            </li>*@
+                        <li class="list-group-item p-4">
+                            <strong>教师描述：</strong><br>
+                            <span>&nbsp;&nbsp;&nbsp;@teachers.Teacher_dec</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div></div>
+</form>

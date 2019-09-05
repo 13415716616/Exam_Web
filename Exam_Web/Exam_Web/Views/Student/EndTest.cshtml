@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewData["Title"] = "EndTest";
+    Layout = "~/Views/Shared/Student_Layout.cshtml";
+    var Test = ViewBag.Test as Test;
+    var grade = ViewBag.grade as Grade;
+}
+
+
+<div class="row">
+    <div class="col">
+        <div class="col-lg-6 mb-4" style="margin-left:20%;margin-top:25px">
+            <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                    <table class="table mb-0">
+                        <tbody style="align-content:center">
+                            <tr><td style="width:150px;">试卷名称：</td><td align="center">@Test.Test_name</td></tr>
+                            <tr><td style="width:150px;">试卷总分：</td><td align="center">@Test.Mark</td> </tr>
+                            <tr><td style="width:150px;"> 选择题得分：</td><td align="center">@grade.S_mark</td> </tr>
+                            <tr><td style="width:150px;"> 问答题总分：</td><td align="center">@grade.A_mark</td> </tr>
+                            <tr><td style="width:150px;">你的总分：</td><td align="center">@grade.mark</td> </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

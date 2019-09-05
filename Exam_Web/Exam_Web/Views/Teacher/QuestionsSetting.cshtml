@@ -1,0 +1,387 @@
+﻿
+@{
+    SelectQuestions questions = new SelectQuestions();
+    var ques = ViewBag.questions as List<SelectQuestions>;
+    AnswerQuestion answer = new AnswerQuestion();
+    var ans = ViewBag.answers as List<AnswerQuestion>;
+}
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+
+    var id;
+
+
+    function deleteSelect(id) {
+        $.ajax(
+            {
+                url: '/Data/DeleteSelsect',
+                type: "POST",
+                data: { "id": id },
+                success: function () {
+                    document.getElementById(id).remove();
+                },
+                Error: function () {
+                    alert("error");
+                },
+            }
+        );
+    };
+
+    function deleteAnswer(aid) {
+        $.ajax({
+            url: '/Data/DeleteAnswer',
+            type: "POST",
+            data: { "id": aid },
+            success: function () {
+                document.getElementById(aid).remove();
+            },
+            Error: function () {
+                alert("error");
+            },
+        })
+    }
+
+    function modfiySelect(_id) {
+        id = _id;
+        $.ajax({
+            url: '/Data/GetSelect',
+            data: { 'id': _id },
+            type: "GET",
+            dataType: "json",
+            success: function (select) {
+                console.log(select);
+                //   document.getElementById(Sel_name).nodeValue(select.que_name);
+                $("#Sel_Class").val(select.que_Class);
+                $("#Sel_name").val(select.que_name);
+                $("#Sel_A").val(select.first_select);
+                $("#Sel_B").val(select.second_select);
+                $("#Sel_C").val(select.third_select);
+                $("#Sel_D").val(select.fourth_select);
+                $("#Sel_dec").val(select.dec);
+            }
+        })
+    }
+
+    function modfiyAnswer(_id) {
+        id = _id;
+        $.ajax({
+            url: '/Data/GetAnswer',
+            data: {
+                'id': _id,
+            },
+            type: "GET",
+            dataType: "json",
+            success: function (select) {
+                console.log(select);
+                $("#AQ_Class").val(select.aQ_Class);
+                $("#AQ_Name").val(select.aQ_Name);
+                $("#AQ_Mark").val(select.aQ_Mark);
+                $("#AQ_Desc").val(select.aQ_Desc);
+                //   document.getElementById(Sel_name).nodeValue(select.que_name);
+            }
+        })
+    }
+
+    function modfiySelectFrom() {
+        console.log($("#Sel_A").val());
+        $.ajax({
+            url: '/Data/ModifySelect',
+            data: {
+                "id": id,
+                "class": $("#Sel_Class").val(),
+                "name": $("#Sel_name").val(),
+                "A": $("#Sel_A").val(),
+                "B": $("#Sel_B").val(),
+                "C": $("#Sel_C").val(),
+                "D": $("#Sel_D").val(),
+                "dec": $("#Sel_dec").val(),
+            },
+            type: 'POST',
+            cache: true,
+            success: function () {
+                console.log('yes');
+            }
+        })
+    }
+
+    function modfiyAnswerFrom() {
+        console.log($("#Sel_A").val());
+        $.ajax({
+            url: '/Data/ModifyAnswer',
+            data: {
+                "id": id,
+                "class": $("#AQ_Class").val(),
+                "name": $("#AQ_Name").val(),
+                "mark": $("#AQ_Mark").val(),
+                "dec": $("#AQ_Desc").val(),
+            },
+            type: 'POST',
+            cache: true,
+            success: function () {
+                console.log('yes');
+            }
+        })
+    }
+
+/**/</script>
+
+
+
+<div class="main-content-container container-fluid px-4">
+    <!-- Page Header -->
+    <div class="page-header row no-gutters py-4">
+        <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+            @*<span class="text-uppercase page-subtitle">Overview</span>*@
+            <h3 class="page-title">试题管理</h3>
+        </div>
+    </div>
+    <!-- End Page Header -->
+    <!-- Default Light Table -->
+    <div class="row">
+        <div class="form-group">
+
+            <form asp-controller="Teacher" asp-action="QuestionsSetting">
+                &nbsp;&nbsp;&nbsp;&nbsp;<input type="text" class="input" name="Search_info" id="search1">
+                <input type="submit" class="btn btn-info" value="搜索" />
+
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="button" class="btn btn-info" value="+选择题" data-toggle="modal" data-target="#myModal" />
+                <input type="button" class="btn btn-info" value="+问答题" data-toggle="modal" data-target="#myModal1" />
+
+            </form> @*模态框*@
+            <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog" style="width:1000px;height:1111px">
+                    <div class="modal-content" style="width:700px">
+                        <div class="modal-header">
+                            @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                            <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+                        </div>
+                        <form asp-controller="Teacher" asp-action="QuestionsSetting">
+                            <div class="modal-body">
+
+                                <div class="row" style="margin-top:8px">
+                                    类型：<input type="text" asp-for="@questions.Que_Class" class="input" />
+                                </div>
+                                @*<div class="row">
+            难度：<input type="text" />
+        </div>*@
+                                <div class="row" style="margin-top:8px">
+                                    题目名称：
+                                </div> <div class="row" style="margin-top:3px">
+                                    <textarea class="form-control" asp-for="@questions.Que_name"></textarea>
+                                </div>
+                                <div class="row" style="margin-top:8px">选项A：<input type="text" asp-for="@questions.First_select" class="input" /></div>
+                                <div class="row" style="margin-top:8px">选项B：<input type="text" asp-for="@questions.Second_select" class="input" /></div>
+                                <div class="row" style="margin-top:8px">选项C：<input type="text" asp-for="@questions.Third_select" class="input" /></div>
+                                <div class="row" style="margin-top:8px">选项D：<input type="text" asp-for="@questions.Fourth_select" class="input" /></div>
+                                <div class="row" style="margin-top:8px">答案:<input type="text" asp-for="@questions.Answer" class="input" /></div>
+                                <div class="row" style="margin-top:8px">分数：<input type="text" asp-for="@questions.Que_mark" class="input" /></div>
+                                <div>
+                                    <div class="row" style="margin-top:8px">
+                                        解析：
+                                    </div>
+                                    <div class="row" style="margin-top:3px">
+                                        <textarea class="form-control" asp-for="@questions.Dec"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                <button type="submit" class="btn btn-primary">提交更改</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*修改的模态框*@
+        <div class="modal fade " id="myModal_modif" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" onload="">
+            <div class="modal-dialog" style="width:1000px;height:1111px">
+                <div class="modal-content" style="width:700px">
+                    <div class="modal-header">
+                        @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                        <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+                    </div>
+                    <form asp-controller="Teacher" asp-action="QuestionsSetting" id="ModifSelect">
+                        <div class="modal-body">
+
+                            <div class="row" style="margin-top:8px">
+                                类型：<input type="text" asp-for="@questions.Que_Class" class="input" id="Sel_Class" />
+                            </div>
+                            @*<div class="row">
+                                    难度：<input type="text" />
+                                </div>*@
+                            <div class="row" style="margin-top:8px">
+                                题目名称：
+                            </div> <div class="row" style="margin-top:3px">
+                                <textarea class="form-control" asp-for="@questions.Que_name" id="Sel_name"></textarea>
+                            </div>
+                            <div class="row" style="margin-top:8px">选项A：<input type="text" asp-for="@questions.First_select" class="input" id="Sel_A" /></div>
+                            <div class="row" style="margin-top:8px">选项B：<input type="text" asp-for="@questions.Second_select" class="input" id="Sel_B" /></div>
+                            <div class="row" style="margin-top:8px">选项C：<input type="text" asp-for="@questions.Third_select" class="input" id="Sel_C" /></div>
+                            <div class="row" style="margin-top:8px">选项D：<input type="text" asp-for="@questions.Fourth_select" class="input" id="Sel_D" /></div>
+                            <div>
+                                <div class="row" style="margin-top:8px">
+                                    解析：
+                                </div>
+                                <div class="row" style="margin-top:3px">
+                                    <textarea class="form-control" asp-for="@questions.Dec" id="Sel_dec"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                            <button type="button" class="btn btn-primary" onclick="modfiySelectFrom()" data-dismiss="modal">提交更改</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="modal fade " id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="width:1000px;height:1111px">
+            <div class="modal-content" style="width:700px">
+                <div class="modal-header">
+                    @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                    <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+                </div>
+                <form asp-controller="Teacher" asp-action="QuestionsSetting">
+                    <div class="modal-body">
+
+                        <div class="row">
+                            类型：<input type="text" asp-for="@answer.AQ_Class" class="input" />
+                        </div>
+                        <div class="row" style="margin-top:8px">
+                            题目名称：
+                        </div>
+                        <div class="row" style="margin-top:3px">
+                            <textarea class="form-control" asp-for="@answer.AQ_Name"></textarea>
+                        </div>
+                        <div class="row" style="margin-top:8px">
+                            分数：<input type="text" asp-for="@answer.AQ_Mark" class="input" />
+                        </div>
+
+                        <div>
+                            <div class="row" style="margin-top:8px">
+                                解析：
+                            </div>
+                            <div class="row" style="margin-top:3px">
+                                <textarea class="form-control" asp-for="@answer.AQ_Desc"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary">提交更改</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <div class="card card-small mb-4">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">试题</h6>
+            </div>
+            <div class="card-body p-0 pb-3 text-center">
+                <table class="table mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            @*<th scope="col" class="border-0">ID</th>*@
+                            <th scope="col" class="border-0" width="800px">试题名称</th>
+                            <th scope="col" class="border-0">试题类型</th>
+                            <th scope="col" class="border-0">分数</th>
+                            <th scope="col" class="border-0">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ques != null)
+                        {
+                            @foreach (var q in ques)
+                            {
+                                <tr id="'A'@q.Que_ID">
+                                    @*<td>@q.Que_ID</td>*@
+                                    <td>@q.Que_name.</td>
+                                    <td>选择题</td>
+                                    <td>@q.Que_mark</td>
+                                    <td>
+                                        <input type="button" class="btn btn-info" value="编辑" data-toggle="modal" data-target="#myModal_modif" onclick="modfiySelect(@q.Que_ID)" />
+                                        <input type="button" class="btn btn-info" value="删除" onclick="deleteSelect(@q.Que_ID)" />
+                                    </td>
+                                </tr>
+                            }}
+                        @if (ans != null)
+                        {
+                            @foreach (var a in ans)
+                            {
+                                <tr id="@a.AQ_ID">
+                                    @*<td>@a.AQ_ID</td>*@
+                                    <td>@a.AQ_Name</td>
+                                    <td>问答题</td>
+                                    <td>@a.AQ_Mark</td>
+                                    <td>
+                                        <input type="button" class="btn btn-info" value="编辑" data-toggle="modal" data-target="#AModal" onclick="modfiyAnswer(@a.AQ_ID)" />
+                                        <input type="button" class="btn btn-info" value="删除" onclick="deleteAnswer(@a.AQ_ID)" />
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Default Light Table -->
+<!-- Default Dark Table -->
+
+<div class="modal fade " id="AModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1000px;height:1111px">
+        <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+            </div>
+            <form asp-controller="Teacher" asp-action="QuestionsSetting">
+                <div class="modal-body">
+
+                    <div class="row">
+                        类型：<input type="text" id="AQ_Class" class="input" />
+                    </div>
+                    <div class="row" style="margin-top:8px">
+                        题目名称：
+                    </div>
+                    <div class="row" style="margin-top:3px">
+                        <textarea class="form-control" id="AQ_Name"></textarea>
+                    </div>
+                    <div class="row" style="margin-top:8px">
+                        分数：<input type="text" id="AQ_Mark" class="input" />
+                    </div>
+
+                    <div>
+                        <div class="row" style="margin-top:8px">
+                            解析：
+                        </div>
+                        <div class="row" style="margin-top:3px">
+                            <textarea class="form-control" id="AQ_Desc"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="submit" class="btn btn-primary" onclick="modfiyAnswerFrom()">提交更改</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+

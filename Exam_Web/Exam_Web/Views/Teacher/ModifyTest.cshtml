@@ -1,0 +1,272 @@
+﻿
+@{
+    ViewData["Title"] = "ModifyTest";
+    Layout = "~/Views/Shared/Student_Layout.cshtml";
+    SelectQuestions questions = new SelectQuestions();
+    AnswerQuestion answer = new AnswerQuestion();
+    //  var test = ViewBag.test as Test;
+    var test = ViewBag.test as Test;
+    }
+
+    <head>
+    </head>
+    <script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+
+    var id_Arrary = [];
+    var i;
+
+    function createselect() {
+        var Q_name = document.getElementById("Q_name").value;
+        var Q_class = document.getElementById("Q_class").value;
+        var Q_mark = document.getElementById("mark").value;
+        $.ajax(
+            {
+                url: '/Data/CreateSelect',
+                type: "POST",
+                cache: true,
+                data: $('#Qselect').serialize(),
+                success: function (id) {
+                    getselect(id);
+                },
+                Error: function () {
+                    alert("error");
+                }
+            }
+        );
+    }
+
+    function createanswer() {
+        var Q_name = document.getElementById("Q_name").value;
+        var Q_class = document.getElementById("Q_class").value;
+        var Q_mark = document.getElementById("mark").value;
+        $.ajax(
+            {
+                url: '/Data/CreateAnswer',
+                type: "POST",
+                cache: true,
+                data: $('#Answer').serialize(),
+                success: function (id) {
+                    getanswer(id);
+                },
+                Error: function () {
+                    alert("error");
+                }
+            }
+        );
+    }
+
+    function getselect(id) {
+        $.ajax({
+            url: '/Data/GetSelect',
+            type: 'Get',
+            data: { "id": id },
+            dataType: "json",
+            success: function (select) {
+                id_Arrary.push(select.que_ID);
+                console.log(select);
+                console.log(id_Arrary);
+                $("#tab tbody").prepend("<tr><td>"+select.que_ID+"</td><td>" + select.que_name + "</td><td>选择题</td><td>" + select.que_mark + "</td> </tr>");
+            }
+        }
+        );
+    }
+
+    function getanswer(id) {
+        $.ajax({
+            url: '/Data/GetAnswer',
+            type: 'Get',
+            data: { "id": id },
+            dataType: "json",
+            success: function (answer) {
+                id_Arrary.push(answer.aQ_ID);
+                console.log(answer);
+                console.log(id_Arrary);
+                $("#tab tbody").prepend("<tr><td>"+answer.aQ_ID+"</td><td>" + answer.aQ_Name + "</td><td>选择题</td><td>" + answer.aQ_Mark + "</td> </tr>");
+            }
+        }
+        );
+    }
+
+    function sum_text() {
+        $.ajax({
+            url: '/Data/Test_sumit',
+            type: 'post',
+            dataType:'json',
+            data: {
+                "id": id_Arrary.toString(),
+                "name": document.getElementById("Test_name").value,
+                "class": document.getElementById("Test_class").value,
+            },
+            success: function () {
+                alert("成功");
+                console.log(id_Arrary.toString());
+            },
+            Error: function () {
+                alert("error");
+            }
+        })
+    }
+/**/</script>
+
+    <head onload="ttt()">
+    </head>
+    <div class="main-content-container container-fluid px-4">
+        <!-- Page Header -->
+
+        <div class="page-header row no-gutters py-4">
+            <div class="col-12 col-sm-4 text-center text-sm-left mb-0">
+                @*<span class="text-uppercase page-subtitle">Overview</span>*@
+                <h3 class="page-title" style="font-family:'楷体'">编辑试卷</h3>
+                @*<button onclick="getselect(38)"></button>*@
+                <button onclick="ttt()"></button>
+            </div>
+        </div>
+
+
+        <div class="row">
+            &nbsp; &nbsp; &nbsp;试卷名称： <input type="text" class="input" style="width:1000px" id="Test_name"></input>
+        </div>
+        <div class="row" style="margin-top:8px">
+            &nbsp; &nbsp; &nbsp;试卷类型： <input type="text" class="input" style="width:300px" id="Test_class"></input>
+        </div>
+
+
+
+        <!-- End Page Header -->
+        <!-- Default Light Table -->
+        <div class="row" style="margin-top:8px">
+            <div class="form-group">
+
+                &nbsp; &nbsp; &nbsp;
+                <input type="button" class="btn btn-info" value="+选择题" data-toggle="modal" data-target="#myModal" />
+                <input type="button" class="btn btn-info" value="+问答题" data-toggle="modal" data-target="#myModal1" />
+
+                @*模态框*@
+                <div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width:1000px;height:1111px">
+                        <div class="modal-content" style="width:700px">
+                            <div class="modal-header">
+                                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                                <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+                            </div>  <form asp-controller="Data" asp-action="CreateSelect" id="Qselect">
+                                <div class="modal-body">
+
+                                    <div class="row" style="margin-top:8px">
+                                        类型：<input type="text" asp-for="@questions.Que_Class" class="input" id="Q_class" />
+                                    </div>
+                                    @*<div class="row">
+                                            难度：<input type="text" />
+                                        </div>*@
+                                    <div class="row" style="margin-top:8px">
+                                        题目名称：
+                                    </div> <div class="row" style="margin-top:3px">
+                                        <textarea class="form-control" asp-for="@questions.Que_name" id="Q_name"></textarea>
+                                    </div>
+                                    <div class="row" style="margin-top:8px">
+                                        选项A：<input type="text" asp-for="@questions.First_select" name="first" class="input" />
+                                    </div>
+                                    <div class="row" style="margin-top:8px">选项B：<input type="text" asp-for="@questions.Second_select" class="input" /></div>
+                                    <div class="row" style="margin-top:8px">选项C：<input type="text" asp-for="@questions.Third_select" class="input" /></div>
+                                    <div class="row" style="margin-top:8px">选项D：<input type="text" asp-for="@questions.Fourth_select" class="input" /></div>
+                                    <div class="row" style="margin-top:8px">答案：<input type="text" asp-for="@questions" class="input" /></div>
+                                    <div class="row" style="margin-top:8px">分数：&nbsp;&nbsp;&nbsp;<input type="text" asp-for="@questions.Que_mark" class="input" id="mark" /></div>
+                                    <div>
+                                        <div class="row" style="margin-top:8px">
+                                            解析：
+                                        </div>
+                                        <div class="row" style="margin-top:3px">
+                                            <textarea class="form-control" asp-for="@questions.Dec"></textarea>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" onclick="createselect()" data-dismiss="modal">提交更改</button>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade " id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="width:1000px;height:1111px">
+                        <div class="modal-content" style="width:700px">
+                            <div class="modal-header">
+                                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                                <h4 class="modal-title" id="myModalLabel">添加课程信息</h4>
+                            </div>
+                            <form asp-controller="Data" asp-action="CreateAnswer" id="Answer">
+                                <div class="modal-body">
+                                    <div class="row">
+                                        类型：<input type="text" asp-for="@answer.AQ_ID" class="input" id="A_class" />
+                                    </div>
+                                    <div class="row" style="margin-top:8px">
+                                        题目名称：
+                                    </div>
+                                    <div class="row" style="margin-top:3px">
+                                        <textarea class="form-control" asp-for="@answer.AQ_Name" id="A_name"></textarea>
+                                    </div>
+                                    <div class="row" style="margin-top:8px">
+                                        分数：<input type="text" asp-for="@answer.AQ_Mark" class="input" id="A_mark" />
+                                    </div>
+                                    <div>
+                                        <div class="row" style="margin-top:8px">
+                                            解析：
+                                        </div>
+                                        <div class="row" style="margin-top:3px">
+                                            <textarea class="form-control" asp-for="@answer.AQ_Desc" id="A_class"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" onclick="createanswer()" data-dismiss="modal">提交更改</button>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col">
+            <div class="card card-small mb-4">
+                <div class="card-header border-bottom">
+                    <h6 class="m-0">考试试题</h6>
+                </div>
+                <div class="card-body p-0 pb-3 text-center">
+                    <table class="table mb-0" id="tab">
+                        <thead class="bg-light">
+                            <tr>
+                                <th scope="col" class="border-0">ID</th>
+                                <th scope="col" class="border-0">试题名称</th>
+                                <th scope="col" class="border-0">试题类型</th>
+                                <th scope="col" class="border-0">分数</th>
+                                <th scope="col" class="border-0">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-default" onclick="sum_text()">确定</button>
+    <!-- End Default Light Table -->
+    <!-- Default Dark Table -->
+    <!-- End Default Dark Table -->
+    </div>
+
+
+}
+
+

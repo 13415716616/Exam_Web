@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "CorrectTest";
+    Layout = "~/Views/Shared/mian_layout.cshtml";
+    var gradeid = ViewBag.gradeid as List<int>;
+    var name = ViewBag.name as List<string>;
+    var smark = ViewBag.smark as List<int>;
+    var a = 0;
+}
+<script>
+    var m = 0;
+    var t = 0;
+    var mark = 0;
+    var _id;
+
+    function getinfo(id) {
+        var a;   
+        _id = id;
+        $.ajax({
+            url: '/Data/GetAnswerifno',
+            data: { "id": id },
+            type: 'post',
+            success: function (a) {
+                console.log(a);
+                $("#buju").html("");
+                var s = a.split("-");
+                var s1 = s[0].split("&");
+                var s2 = s[1].split(",");
+                t = s1.length - 1;
+                for (var i = 0; i < s1.length-1; i++) {
+                    console.log(s1);
+                    $("#buju").append(" <div class='row'>" + s1[i] + "</div><div style='margin-top:5px;margin-bottom:5px'><textarea style='width:80%' class='input'>"+s2[i]+"</textarea></div><div style='margin-top:5px;margin-bottom:20px' class='row'>得分:<input stye='text' class='input' id='"+i+"'><div>");
+                }              
+            }
+        })
+    }
+
+    function save() {
+        for (var i = 0; i < t; i++) {
+            m = $("#" + i).val();
+            mark += Number(m);
+            console.log(mark);
+        }
+        $.ajax({
+            url: '/Data/SaveGradeAnswer',
+            data:{
+                "id": _id,
+                "mark":mark,
+            },
+            success: function () {
+                window.location.reload();
+            }
+        }
+    )
+
+    }
+   
+</script>
+<div class="row">
+    <div class="col">
+        <div class="card card-small mb-4">
+            <div class="card-header border-bottom">
+                <h6 class="m-0">试卷批改</h6>
+            </div>
+            <div class="card-body p-0 pb-3 text-center">
+                <table class="table mb-0">
+                    <thead class="bg-light">
+                        <tr>
+                            <th scope="col" class="border-0">试卷ID</th>
+                            <th scope="col" class="border-0">试卷名称</th>
+                            <th scope="col" class="border-0">选择题分数</th>
+                            <th scope="col" class="border-0">试卷操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var i in gradeid)
+                        {
+                        <tr>
+                            <td>@i</td>
+                            <td>@name[a]</td>
+                            <td>@smark[a]</td>
+                            <td><button class="btn btn-info" onclick="getinfo(@i)" data-toggle="modal" data-target="#AModal1">批改</button></td>
+                        </tr>
+                            a++;
+                        }
+
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade " id="AModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1000px;height:1111px">
+        <div class="modal-content" style="width:700px">
+            <div class="modal-header">
+                @*<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>*@
+                <h4 class="modal-title" id="myModalLabel">试卷批改</h4>
+            </div>
+            <div class="modal-body">
+                <div id='buju'>
+                </div>              
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="submit" class="btn btn-primary" onclick="save()"  data-dismiss="modal">提交更改</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+

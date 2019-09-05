@@ -1,0 +1,77 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Student\Setting.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Student\Setting.cshtml" />
+    <None Include="wwwroot\images\shards-dashboards-logo-danger.svg" />
+    <None Include="wwwroot\images\shards-dashboards-logo-info.svg" />
+    <None Include="wwwroot\images\shards-dashboards-logo-secondary.svg" />
+    <None Include="wwwroot\images\shards-dashboards-logo-success.svg" />
+    <None Include="wwwroot\images\shards-dashboards-logo-warning.svg" />
+    <None Include="wwwroot\images\shards-dashboards-logo.svg" />
+    <None Include="wwwroot\scripts\app\app-blog-new-post.1.1.0.js" />
+    <None Include="wwwroot\scripts\app\app-blog-new-post.1.1.0.min.js" />
+    <None Include="wwwroot\scripts\app\app-blog-overview.1.1.0.js" />
+    <None Include="wwwroot\scripts\app\app-blog-overview.1.1.0.min.js" />
+    <None Include="wwwroot\scripts\app\app-components-overview.1.1.0.js" />
+    <None Include="wwwroot\scripts\app\app-components-overview.1.1.0.min.js" />
+    <None Include="wwwroot\scripts\extras.1.1.0.min.js" />
+    <None Include="wwwroot\scripts\shards-dashboards.1.1.0.js" />
+    <None Include="wwwroot\scripts\shards-dashboards.1.1.0.js.map" />
+    <None Include="wwwroot\scripts\shards-dashboards.1.1.0.min.js" />
+    <None Include="wwwroot\styles\scss\accent-variations\danger.scss" />
+    <None Include="wwwroot\styles\scss\accent-variations\info.scss" />
+    <None Include="wwwroot\styles\scss\accent-variations\secondary.scss" />
+    <None Include="wwwroot\styles\scss\accent-variations\success.scss" />
+    <None Include="wwwroot\styles\scss\accent-variations\warning.scss" />
+    <None Include="wwwroot\styles\scss\blocks\_main-content.scss" />
+    <None Include="wwwroot\styles\scss\blocks\_main-footer.scss" />
+    <None Include="wwwroot\styles\scss\blocks\_main-navbar.scss" />
+    <None Include="wwwroot\styles\scss\blocks\_main-sidebar.scss" />
+    <None Include="wwwroot\styles\scss\blocks\_page-header.scss" />
+    <None Include="wwwroot\styles\scss\components\_card-post.scss" />
+    <None Include="wwwroot\styles\scss\components\_error.scss" />
+    <None Include="wwwroot\styles\scss\plugins\_quill.scss" />
+    <None Include="wwwroot\styles\scss\shards-dashboards.scss" />
+    <None Include="wwwroot\styles\scss\templates\_blog-add-new-post.scss" />
+    <None Include="wwwroot\styles\scss\templates\_blog-overview.scss" />
+    <None Include="wwwroot\styles\scss\templates\_common.scss" />
+    <None Include="wwwroot\styles\scss\utilities\_borders.scss" />
+    <None Include="wwwroot\styles\scss\utilities\_general.scss" />
+    <None Include="wwwroot\styles\scss\utilities\_text.scss" />
+    <None Include="wwwroot\styles\scss\_alert.scss" />
+    <None Include="wwwroot\styles\scss\_badge.scss" />
+    <None Include="wwwroot\styles\scss\_button-group.scss" />
+    <None Include="wwwroot\styles\scss\_buttons.scss" />
+    <None Include="wwwroot\styles\scss\_card.scss" />
+    <None Include="wwwroot\styles\scss\_custom-forms.scss" />
+    <None Include="wwwroot\styles\scss\_custom-sliders.scss" />
+    <None Include="wwwroot\styles\scss\_dropdown.scss" />
+    <None Include="wwwroot\styles\scss\_icons.scss" />
+    <None Include="wwwroot\styles\scss\_images.scss" />
+    <None Include="wwwroot\styles\scss\_input-group.scss" />
+    <None Include="wwwroot\styles\scss\_list-group.scss" />
+    <None Include="wwwroot\styles\scss\_navbar.scss" />
+    <None Include="wwwroot\styles\scss\_overrides.scss" />
+    <None Include="wwwroot\styles\scss\_reboot.scss" />
+    <None Include="wwwroot\styles\scss\_utilities.scss" />
+    <None Include="wwwroot\styles\scss\_variables.scss" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Bootstrap-Table" Version="0.4.0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
+  </ItemGroup>
+
+</Project>
